@@ -6,12 +6,14 @@
 
 echo "Installing TimeMachine Server..."
 
+export NETATALK_WK="${HOME}/netatalk"
+
 # Base software
 sudo apt-get install -y hfsprogs hfsplus
 
 # Install Netatalk
-mkdir ~/netatalk
-cd ~/netatalk
+mkdir "${NETATALK_WK}"
+cd "${NETATALK_WK}"
 
 sudo apt-get install -y \
     build-essential \
@@ -45,19 +47,22 @@ This is a MANUAL STEP
 1.Update sources.list: sudo vi /etc/apt/sources.list
 ENABLE Jessie & DISABLE stretch =>
 
-    deb http://ftp.debian.org/debian stretch main contrib non-free
+=== FILE CONTENTS - START ===
+deb http://ftp.debian.org/debian stretch main contrib non-free
 
-    deb http://ftp.debian.org/debian/ stretch-updates main contrib non-free
-    
-    deb http://security.debian.org/ stretch/updates main contrib non-free
-    
-    deb http://apt.osmc.tv stretch main
+deb http://ftp.debian.org/debian/ stretch-updates main contrib non-free
 
-    ##deb http://ftp.debian.org/debian jessie main contrib non-free
-    
-    ##deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
-    
-    ##deb http://security.debian.org/ jessie/updates main contrib non-free
+deb http://security.debian.org/ stretch/updates main contrib non-free
+
+deb http://apt.osmc.tv stretch main
+
+##deb http://ftp.debian.org/debian jessie main contrib non-free
+
+##deb http://ftp.debian.org/debian/ jessie-updates main contrib non-free
+
+##deb http://security.debian.org/ jessie/updates main contrib non-free
+=== FILE CONTENTS - END ===
+
 
 2.Update apt & install mysql libs =>
     sudo apt-get update
@@ -107,7 +112,7 @@ This is a MANUAL STEP
 
 1. EDIT FILE and Change /etc/nsswitch.conf
 
-    sudo /etc/nsswitch.conf
+    sudo vi /etc/nsswitch.conf
 
 2. Add or modify the line => 
     hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4 mdns 
@@ -120,9 +125,11 @@ echo "Are sure to continue? (press a to continue or ctrl-c to finish)"
 read
 # MANUAL STEP ----- STOP
 
-sudo cat >> /etc/avahi/services/afpd.service <<-EOF
+export AFPD_SERVICE="/etc/avahi/services/afpd.service"
+if [ ! -f "${AFPD_SERVICE}" ];  then sudo touch "${AFPD_SERVICE}"; fi
+sudo bash -c 'cat <<-EOF > /etc/avahi/services/afpd.service
 
-<<!-- ## ADDED in setup - START -->
+<!-- ## ADDED in setup - START -->
 <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
 <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
 <service-group>
@@ -137,19 +144,22 @@ sudo cat >> /etc/avahi/services/afpd.service <<-EOF
         <txt-record>model=TimeCapsule</txt-record>
     </service>
 </service-group>
-<<!-- ## ADDED in setup - END -->
-EOF
+<!-- ## ADDED in setup - END -->
+EOF'
 
 sudo mv /usr/local/etc/afp.conf /usr/local/etc/afp.conf.ORIGINAL
-sudo cat >> /usr/local/etc/afp.conf <<-EOF
+
+export AFPD_CONF="/usr/local/etc/afp.conf"
+if [ ! -f "${AFPD_CONF}" ];  then sudo touch "${AFPD_CONF}"; fi
+sudo bash -c 'cat <<-EOF > /usr/local/etc/afp.conf
 
 [Global]
   mimic model = TimeCapsule6,106
 
 [PI Time Machine]
-  path = /media/tm
+  path = /media/TM-MBP
   time machine = yes
-EOF
+EOF'
 
 # Mount point
 sudo mkdir -p /media/tm
@@ -189,5 +199,5 @@ sudo systemctl enable netatalk
 
 # Cleanup
 cd 
-rm -rf netatalk
+rm -rf "${NETATALK_WK}"
 

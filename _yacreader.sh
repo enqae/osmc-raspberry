@@ -4,6 +4,8 @@
 
 echo "Installing YACReaderLibraryServer..."
 
+export YAC_WK="${HOME}/yac"
+
 # Base Tools
 function _getBaseTools(){
     sudo apt-get install -y mercurial
@@ -16,23 +18,23 @@ function _getBaseTools(){
 
 # Get YacReader
 function _getYACReader(){
-    mkdir -p ~/yac/yacreader_hg
-    cd yac/yacreader_hg
+    mkdir -p "${YAC_WK}/yacreader_hg"
+    cd "${YAC_WK}/yacreader_hg"
     hg clone https://bitbucket.org/luisangelsm/yacreader .
 }
 
 # unarr
 function _get_unarr(){
-    mkdir -p ~/yac/yacreader_hg/compressed_archive/unarr/ 
-    cd ~/yac/yacreader_hg/compressed_archive/unarr
+    mkdir -p "${YAC_WK}/yacreader_hg/compressed_archive/unarr/" 
+    cd "${YAC_WK}/yacreader_hg/compressed_archive/unarr"
     wget github.com/selmf/unarr/archive/master.zip
     unzip master.zip
 }
 
 # Build & install YACReaderLibraryServer
 function _buildYACReader(){
-    mkdir -p ~/yac/yacreader_hg/YACReaderLibraryServer/
-    cd ~/yac/yacreader_hg/YACReaderLibraryServer/
+    mkdir -p "${YAC_WK}/yacreader_hg/YACReaderLibraryServer/"
+    cd "${YAC_WK}/yacreader_hg/YACReaderLibraryServer/"
     qmake YACReaderLibraryServer.pro
     make
     sudo make install
@@ -61,7 +63,7 @@ EOF
 # Cleanup
 function _cleanup(){
     cd 
-    rm -rf yac
+    rm -rf "${YAC_WK}"
 }
 
 # Prepare, Build, Install 

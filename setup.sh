@@ -12,18 +12,25 @@ function _updateOSMC(){
 
 function _setupBashrc(){
 
+    # Set for the following processes
+    export ON_INIT_FILE="${HOME}/.on_init_gen"
+
+    # Update .bashrc only the first run of this setup script
+    [[ -f "${ON_INIT_FILE}" ]] && return
+
     mv on_init ~/.on_init_gen
 
     cat >> ~/.bashrc <<-EOF
+
 #### ADDED by osmc-setup process - START    
-if [ -f ~/.on_init ]; then
+if [ -f ~/.on_init_gen ]; then
 . ~/.on_init_gen
 fi
-#### ADDED by osmc-setup process - END
-EOF
 
-    # Set for the following processes
-    export ON_INIT_FILE="${HOME}/.on_init_gen"
+export PATH=.:$PATH
+#### ADDED by osmc-setup process - END
+
+EOF
 }
 
 function _runSetupScripts(){
