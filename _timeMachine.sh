@@ -175,7 +175,7 @@ This is a MANUAL STEP
 2.Edit /etc/fstab and add the disk => 
     sudo vi /etc/fstab
 
-    It should be like (the data to change is /dev/sda2):
+    It should be like (the data to change is --->>>/dev/sda2<<<---):
         /dev/sda2 /media/tm hfsplus force,rw,user,auto 0 0
 
 3. Mount the disk => 
