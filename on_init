@@ -11,3 +11,6 @@
 alias ll="ls -la"
 alias lh="ls -lah"
 
+# See all commands: vcgencmd commands [https://elinux.org/RPI_vcgencmd_usage]
+alias temp="vcgencmd measure_temp"
+
