@@ -10,6 +10,13 @@ function _updateOSMC(){
     sudo apt-get install -y git
 }
 
+function _setupBinScripts(){
+
+    # ~/bin is added to PATH in 'on_init' file
+    mkdir -p ~/bin
+    cp -R bin/ ~/bin
+}
+
 function _setupBashrc(){
 
     # Set for the following processes
@@ -63,6 +70,9 @@ function _main(){
     
     # Update system
     _updateOSMC
+
+    # Copy bin scripts
+    _setupBinScripts
 
     # Extend .bashrc
     _setupBashrc
