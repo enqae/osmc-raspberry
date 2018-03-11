@@ -50,10 +50,10 @@ This is a MANUAL STEP
     sudo vi /etc/transmission-daemon/settings.json
 
     The values for the settings should be:
-        "incomplete-dir": "/media/torrent/torrent-inprogress",
+        "incomplete-dir": "/mnt/torrent/torrent-inprogress",
         "incomplete-dir-enabled": true,
-        "download-dir": "/media/torrent/torrent_complete",
-        "rpc-username": "osmc",
+        "download-dir": "/mnt/torrent/torrent_complete",
+        "rpc-username": "transmission",
         "rpc-password": "####----THE PASSWORD----####",
         "rpc-whitelist": "192.168.*.*",
 
@@ -64,6 +64,13 @@ read
 echo "Are sure to continue? (press a to continue or ctrl-c to finish)"
 read
 # MANUAL STEP ----- STOP
+
+# Set permission
+sudo usermod -a -G debian-transmission osmc
+sudo chgrp debian-transmission /mnt/torrent/torrent-inprogress
+sudo chgrp debian-transmission /mnt/torrent/torrent_complete
+sudo chmod 770 /mnt/torrent/torrent-inprogress
+sudo chmod 777 /mnt/torrent/torrent_complete
 
 # Start service
 sudo service transmission-daemon reload
