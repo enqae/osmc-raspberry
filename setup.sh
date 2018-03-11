@@ -41,6 +41,9 @@ function _runSetupScripts(){
     # YACReader
     ./_yacreader.sh
 
+    # Convenient Packages
+    ./_convenient.sh
+    
     cat <<-EOF
 Samba and TimeMachine are disabled by default as they required manual steps.
 To enable them => just uncomment
