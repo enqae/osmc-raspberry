@@ -9,7 +9,7 @@ echo "Installing Torrent (Transmission)..."
 
 # Install software
 sudo apt-get install -y hfsprogs hfsplus
-sudo apt-get install -y transmission-daemon
+sudo apt-get install -y transmission-daemon transmission-cli transmission-common
 
 # Prepare mount points [torrent-inprogress - torrent-complete]
 sudo mkdir -p /media/torrent
